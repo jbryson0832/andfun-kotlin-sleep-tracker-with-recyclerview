@@ -20,7 +20,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.formatNights
@@ -60,28 +60,28 @@ class SleepTrackerViewModel(
     /**
      * Converted nights to Spanned for displaying.
      */
-    val nightsString = Transformations.map(nights) { nights ->
+    val nightsString = nights.map { nights ->
         formatNights(nights, application.resources)
     }
 
     /**
      * If tonight has not been set, then the START button should be visible.
      */
-    val startButtonVisible = Transformations.map(tonight) {
+    val startButtonVisible = tonight.map {
         null == it
     }
 
     /**
      * If tonight has been set, then the STOP button should be visible.
      */
-    val stopButtonVisible = Transformations.map(tonight) {
+    val stopButtonVisible = tonight.map {
         null != it
     }
 
     /**
      * If there are any nights in the database, show the CLEAR button.
      */
-    val clearButtonVisible = Transformations.map(nights) {
+    val clearButtonVisible = nights.map {
         it?.isNotEmpty()
     }
 
